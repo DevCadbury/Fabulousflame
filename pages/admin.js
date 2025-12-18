@@ -198,17 +198,23 @@ export default function Admin() {
   const login = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch('/api/admin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password, action: 'check' })
-    });
-    setLoading(false);
-    if (res.status !== 401) {
-      setIsLoggedIn(true);
-      fetchData();
-    } else {
-      setMsg('Invalid Password');
+    try {
+      const res = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, action: 'check' })
+      });
+      setLoading(false);
+      if (res.ok) {
+        setIsLoggedIn(true);
+        fetchData();
+      } else {
+        const data = await res.json().catch(() => ({ message: 'Invalid Password' }));
+        setMsg(data.message || 'Invalid Password');
+      }
+    } catch (err) {
+      setLoading(false);
+      setMsg('Connection error');
     }
   };
 
@@ -231,20 +237,33 @@ export default function Admin() {
     if (action === 'reorder') body.newTags = payload;
     if (action === 'settings') body.settings = payload;
 
-    const res = await fetch('/api/admin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (data.success) {
-      // Refresh data to get updated names/order
-      fetchData(); 
-      if (action === 'add') setNewTag('');
-      setMsg('Operation successful');
-    } else {
-      setMsg(data.message || 'Operation failed');
+    try {
+      const res = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ message: 'Operation failed' }));
+        setLoading(false);
+        setMsg(data.message || 'Operation failed');
+        return;
+      }
+      
+      const data = await res.json();
+      setLoading(false);
+      if (data.success) {
+        // Refresh data to get updated names/order
+        fetchData(); 
+        if (action === 'add') setNewTag('');
+        setMsg('Operation successful');
+      } else {
+        setMsg(data.message || 'Operation failed');
+      }
+    } catch (err) {
+      setLoading(false);
+      setMsg('Connection error: ' + err.message);
     }
   };
 
@@ -279,6 +298,14 @@ export default function Admin() {
                 <div className="input-content">
                   <div className="input-dist">
                     <div className="input-type">
+                      <input 
+                        type="text" 
+                        name="username" 
+                        autoComplete="username" 
+                        style={{ display: 'none' }} 
+                        tabIndex="-1" 
+                        aria-hidden="true"
+                      />
                       <input 
                         className="input-is" 
                         type="password" 
