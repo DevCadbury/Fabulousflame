@@ -7,8 +7,8 @@
     }
   ],
   "env": {
-    "COC_EMAIL": "@COC_EMAIL",
-    "COC_PASSWORD": "@COC_PASSWORD",
-    "ADMIN_PASSWORD": "@ADMIN_PASSWORD"
+    "COC_EMAIL": "@coc_email",
+    "COC_PASSWORD": "@coc_password",
+    "ADMIN_PASSWORD": "@admin_password"
   }
 }
