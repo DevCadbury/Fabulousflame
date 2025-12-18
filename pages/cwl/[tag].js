@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
+import HackerLoader from '../../components/HackerLoader';
 import { FaTrophy, FaShieldAlt, FaStar } from 'react-icons/fa';
 import Link from 'next/link';
 
@@ -37,14 +38,7 @@ export default function CWLDetail() {
   }, [tag, mounted]);
 
   if (!mounted || loading) {
-    return (
-      <Layout>
-        <div style={{ textAlign: 'center', padding: '100px 20px' }}>
-          <div className="loading-spinner"></div>
-          <p style={{ color: '#fff', marginTop: '20px' }}>Loading CWL data...</p>
-        </div>
-      </Layout>
-    );
+    return <HackerLoader text="FETCHING CWL DATA" />;
   }
 
   if (error || !cwl) {

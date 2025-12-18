@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
+import HackerLoader from '../../components/HackerLoader';
 import { FaShieldAlt, FaStar, FaFire, FaExclamationTriangle } from 'react-icons/fa';
 import Link from 'next/link';
 
@@ -37,14 +38,7 @@ export default function WarDetail() {
   }, [tag, mounted]);
 
   if (!mounted || loading) {
-    return (
-      <Layout>
-        <div style={{ textAlign: 'center', padding: '100px 20px' }}>
-          <div className="loading-spinner"></div>
-          <p style={{ color: '#fff', marginTop: '20px' }}>Loading war data...</p>
-        </div>
-      </Layout>
-    );
+    return <HackerLoader text="FETCHING WAR DATA" />;
   }
 
   if (error || !war) {

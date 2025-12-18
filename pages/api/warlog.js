@@ -8,7 +8,10 @@ export default async function handler(req, res) {
     const warLog = await fetchWarLog(tag)
     res.status(200).json(warLog)
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'failed to fetch war log' })
+    console.error('War Log API Error:', err.message)
+    if (err.code === 'UND_ERR_ABORTED' || err.message.includes('aborted')) {
+      return res.status(504).json({ error: 'Request timeout - API took too long to respond' })
+    }
+    res.status(500).json({ error: 'Failed to fetch war log' })
   }
 }
