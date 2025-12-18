@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (!tag) return res.status(400).json({ error: 'tag is required' })
   
   // Add cache control headers
-  res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+  res.setHeader('Cache-Control', 'public, s-maxage=5, stale-while-revalidate=10');
   
   try {
     const cwl = await fetchCWLGroup(tag)

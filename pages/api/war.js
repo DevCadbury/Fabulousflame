@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const { tag } = req.query
   if (!tag) return res.status(400).json({ error: 'tag is required' })  
   // Add cache control headers
-  res.setHeader('Cache-Control', 'public, s-maxage=180, stale-while-revalidate=360');
+  res.setHeader('Cache-Control', 'public, s-maxage=5, stale-while-revalidate=10');
     try {
     const war = await fetchCurrentWar(tag)
     res.status(200).json(war)
