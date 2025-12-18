@@ -286,6 +286,7 @@ export default function Admin() {
                         placeholder="Admin Password" 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
                       />
                       <button className="submit" disabled={loading}>
                         {loading ? '...' : 'Submit'}

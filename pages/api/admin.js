@@ -35,7 +35,10 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    if (action === 'add') {
+    if (action === 'check') {
+      // Just a password check, return success
+      return res.status(200).json({ success: true, message: 'Authenticated' });
+    } else if (action === 'add') {
       if (!tag) return res.status(400).json({ message: 'Tag is required' });
       try {
         await fetchClan(tag);
