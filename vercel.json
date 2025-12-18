@@ -5,10 +5,5 @@
       "src": "package.json",
       "use": "@vercel/next"
     }
-  ],
-  "env": {
-    "COC_EMAIL": "@coc_email",
-    "COC_PASSWORD": "@coc_password",
-    "ADMIN_PASSWORD": "@admin_password"
-  }
+  ]
 }
